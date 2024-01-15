@@ -26,7 +26,7 @@
   width: 400px;
 }
 
-.product .description {
+.product .descripcion {
   text-align: center;
 }
 
@@ -35,7 +35,7 @@
   cursor: pointer;
 }
 
-.addToCartBttn {
+.añadirAlCarrito {
   background-color: transparent;
   border: 2px solid rgb(19, 19, 19);
   min-width: 100px;
