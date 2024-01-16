@@ -7,7 +7,7 @@ export const Shop = () => {
   return (
     <div className="shop">
       <div className="shopTitle">
-        <h1>Suyai Agua Purificada</h1>
+        <h1>Catálogo de productos</h1>
       </div>
 
       <div className="products">

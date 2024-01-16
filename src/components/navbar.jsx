@@ -7,10 +7,10 @@ export const Navbar = () => {
   return (
     <div className="navbar">
       <div className="links">
-        <Link to="/home"> Home </Link>
+        <Link to="/home"> Inicio </Link>
         <Link to="/"> Catálogo de productos </Link>
-        <Link to="/"> Ver pedidos </Link>
-        <Link to="/"> Información de la cuenta </Link>
+        <Link to="/cliente/pedidosCliente"> Ver pedidos </Link>
+        <Link to="/cliente/cuentaCliente"> Información de la cuenta </Link>
         <Link to="/contact"> Ayuda </Link> 
         <Link to="/cart">
           <IoCartOutline size={32}/>
