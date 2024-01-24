@@ -1,41 +1,45 @@
 import React from "react";
+import "./cliente.css";
 
 export const CuentaC = () => {
   return (
     <> 
-      <h1>Información de la cuenta</h1>
+      <h1 style={{fontSize: 40, fontFamily: "sans-serif", textAlign: "center", color: "darkslategray"}}>Información de la cuenta</h1>
 
-      <table>
-        <ul>
-            <label>Nombre: </label>
-            <input type="text" disabled={true}/>
-            <br />
-
-            <label>Dirección: </label>
-            <input type="text" disabled={true} />
-            <br />
-
-            <label>Número de telefono: </label>
-            <input type="number" disabled={true}/>
-            <br />
-
-            <label>Correo: </label>
-            <input type="email" disabled={true}/>
-            <br />
-
-            <label>Nombre de usuario: </label>
-            <input type="text" disabled={true}/>
-            <br />
-
-            <label>Contraseña: </label>
-            <input type="password" disabled={true}/>
-            <br />
-
-            <button>Editar información de la cuenta</button>
-            <br />
-            <button>Guardar información de la cuenta</button>
-        </ul>
-      </table>
+      <div className="infoCuenta">
+        <table>
+          <tr>
+            <td>Nombre de usuario: </td>
+            <td><input type="text" /></td>
+          </tr>
+          <br />
+          <tr>
+            <td>Contraseña: </td>
+            <td><input type="password" /></td>
+          </tr>
+          <br />
+          <tr>
+            <td>Email: </td>
+            <td><input type="text" /></td>
+          </tr>
+          <br />
+          <tr>
+            <td>Direccion: </td>
+            <td><input type="text" /></td>
+          </tr>
+          <br />
+          <tr>
+            <td>Telefono de contacto: </td>
+            <td><input type="text" /></td>
+          </tr>
+          <br />
+          <div className="botonesCuenta">
+            <button className="btnEditar">Editar</button>
+            <button className="btnGuardar">Guardar</button>
+          </div>
+          
+        </table>
+      </div>
     </>
   );
    

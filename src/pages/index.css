@@ -1,0 +1,26 @@
+.bienvenida{
+    text-align: center;
+    color: darkslategray;
+}
+
+.descripcionBienvenida{
+    text-align: center;
+    color: darkslategray;
+}
+
+.descripcionHome{
+    text-align: justify;
+    font-weight: bold;
+    color: darkslategray;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+
+.homeImage{
+    height: 350px;
+    width: 350px;
+    filter: brightness(1.007);  
+    mix-blend-mode: multiply;
+    opacity: 100%;
+}

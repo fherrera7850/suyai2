@@ -14,7 +14,7 @@ export const Cart = () => {
   return (
     <div className="cart">
       <div>
-        <h1>Carrito de compras</h1>
+        <h1 style={{color: "darkslategray"}}>Carrito de compras</h1>
       </div>
       <div className="cart">
         {PRODUCTS.map((product) => {
@@ -39,7 +39,7 @@ export const Cart = () => {
           </button>
         </div>
       ) : (
-        <h1> Tu carrito de compra esta vacio</h1>
+        <h1 style={{color: "darkslategray"}}> Tu carrito de compra esta vacio</h1>
       )}
     </div>
   );

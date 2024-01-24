@@ -2,6 +2,7 @@ import product1 from "./assets/products/bidon.png";
 import product2 from "./assets/products/dispensadorMesa.jpg";
 import product3 from "./assets/products/dispensadorUSB.jpg";
 
+
 export const PRODUCTS = [
   {
     id: 1,

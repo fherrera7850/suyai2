@@ -1,21 +1,117 @@
 .navbar {
   width: 100%;
   height: 80px;
-  background-color: rgb(19, 19, 19);
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 }
 
 .links {
-  margin-right: 50px;
+  /*margin-right: 50px;
   display: flex;
   align-items: center;
+  background-color: mediumseagreen;*/
+  background-color: #5aa6cc; /* Color de fondo */
+  color: white; /* Color del texto */
+  padding: 10px 15px; /* Espaciado interno */
+  border: none; /* Borde ninguno */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  
+  
 }
 
 .links a {
   text-decoration: none;
   color: white;
   margin-left: 20px;
-  font-size: 25px;
+  font-size: 20px;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
+
+.inicio{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 9px 15px; /* Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.catalogo{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 9px 15px; /* Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.pedidos{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 9px 15px; /* Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.cuenta{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 9px 15px; /* Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.ayuda{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 9px 15px; /* Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.carrito{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 10px 11px;  /*Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+}
+
+.iconoCarrito{
+  margin-top: 1px;
+  
 }
