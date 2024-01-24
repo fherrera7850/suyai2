@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./navbar.css";
 import { IoCartOutline } from "react-icons/io5";
+import { MdAccountCircle } from "react-icons/md";
 
 export const Navbar = () => {
   return (
@@ -15,6 +16,9 @@ export const Navbar = () => {
         <Link to="/cart" className="carrito">
           <IoCartOutline className="iconoCarrito" size={28}/>
         </Link>
+        <Link to="/registroUsuario" className="registroUsuario">
+          <MdAccountCircle size={30}/>
+        </Link> 
         
       </div>
     </div>

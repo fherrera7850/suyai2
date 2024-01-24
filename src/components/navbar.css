@@ -103,15 +103,31 @@
 .carrito{
   background-color: #5defb2; /* Color de fondo */
   color: darkslategray; /* Color del texto */
-  padding: 10px 11px;  /*Espaciado interno */
+  padding: 2px 5px;  /*Espaciado interno */
   border: solid;
   border-width: 2px;
   border-color: rgb(90, 90, 90);
   border-radius: 30px; /* Bordes redondeados */
   cursor: pointer; /* Cursor al pasar sobre el botón */
+  margin-left: 100px;
+  margin-top: -10px;
+  position: absolute;
 }
 
 .iconoCarrito{
   margin-top: 1px;
-  
+}
+
+.registroUsuario{
+  background-color: #5defb2; /* Color de fondo */
+  color: darkslategray; /* Color del texto */
+  padding: 2px 5px;  /*Espaciado interno */
+  border: solid;
+  border-width: 2px;
+  border-color: rgb(90, 90, 90);
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor al pasar sobre el botón */
+  margin-left: 20px;
+  margin-top: -10px;
+  position: absolute;
 }

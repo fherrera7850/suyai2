@@ -1,27 +1,49 @@
 import React from "react";
-import homeImage from "../assets/home.jpg";
-import "index.css";
+import registroImage from "../assets/logo_suyai.JPG";
+import "./index.css";
 
-export const Home = () => {
+export const Registro = () => {
   return (
     <> 
-      <title>Registro de usuario</title>
-      <h1 className="Bienvenida">¡Bienvenido, Charles!</h1>
+      <h1 className="bienvenida" style={{fontSize: 40, fontFamily: "sans-serif"}}>Registro de usuario</h1>
       <br />
-      <div style={{textAlign: "center"}}>
-        <img src={homeImage} alt="Home" style={{width: '50%', height: 'auto'}}/>
+      <div className="formularioRegistro">
+        
+        <form action="">
+          <table>
+            <tr>
+              <td><img src={registroImage} alt="Registro" className="registroImage"/></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="">Nombre de usuario: </label></td>
+              <td><input type="text" id="nombreUsuario" placeholder="Ejemplo: pepito1998"/></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="">Contraseña: </label></td>
+              <td><input type="password" id="contraseña" placeholder="*************"/></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="">Nombre y apellido: </label></td>
+              <td><input type="text" id="nombreCompleto" placeholder="Juanito Yañez Herrera"/></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="">Correo electrónico: </label></td>
+              <td><input type="email" id="email" placeholder="pepito1234@gmail.com"/></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="">Dirección: </label></td>
+              <td><input type="text" id="direccion" placeholder="Galvarino 111, El Bosque"/></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="">Teléfono de contacto: </label></td>
+              <td><input type="number" id="telefono" placeholder="912345678"/></td>
+            </tr>
+            <tr>
+              <td><button className="btnRegistrar">Registrarme</button></td>
+            </tr>
+          </table>
+        </form>
       </div>
-      <br />
-      <div>
-        Bienvenido a la web de Aguas Suyai, somos una empresa dedicada a la distribución y comercialización de agua purificada, alcalina y productos afines. Si deseas:
-        <br/>
-        - Agendar un pedido o consultar el catálogo de productos haga click en "Catálogo de productos" en el menú superior de la página y agregue los productos al carrito de compra.
-        <br/>
-        - Revisar sus pedidos haga click en "Ver pedidos" en el menú superior de la página.
-        <br/>
-        - Revisar o editar la información de su cuenta haga click en "Información de la cuenta" en el menú superior de la página.
-      </div>
-      
     </>
   );
    

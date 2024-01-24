@@ -7,6 +7,7 @@ import { Navbar } from "./components/navbar";
 import { Shop } from "./pages/shop/shop";
 import { Contact } from "./pages/contact";
 import { Cart } from "./pages/cart/cart";
+import { Registro } from "./pages/registroUsuario";
 import { ShopContextProvider } from "./context/shop-context";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/cliente/cuentaCliente" element={<CuentaC />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/registroUsuario" element={<Registro />} />
           </Routes>
         </Router>
       </ShopContextProvider>
