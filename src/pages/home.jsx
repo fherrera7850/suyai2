@@ -6,7 +6,7 @@ export const Home = () => {
   return (
     <> 
       <title>Agua Purificada Suyai</title>
-      <h1 className="bienvenida" style={{fontSize: 40, fontFamily: "sans-serif"}}>¡Bienvenido, Charles!</h1>
+      <h1 className="tituloHome" style={{fontSize: 40, fontFamily: "sans-serif"}}>¡Bienvenido, Charles!</h1>
       <br />
       <div style={{textAlign: "center"}}>
         <img src={homeImage} alt="Home" className="homeImage" />

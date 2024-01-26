@@ -19,6 +19,9 @@ export const Navbar = () => {
         <Link to="/registroUsuario" className="registroUsuario">
           <MdAccountCircle size={30}/>
         </Link> 
+        <Link to="/user/login" className="login">
+          <MdAccountCircle size={50}/>
+        </Link>
         
       </div>
     </div>
