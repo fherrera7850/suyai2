@@ -1,0 +1,25 @@
+
+
+.add-to-cart-btn,
+.remove-from-cart-btn {
+  background-color: #4caf50;
+  /* Color de fondo */
+  color: white;
+  /* Color de texto */
+  border: none;
+  /* Sin borde */
+  padding: 10px 20px;
+  /* Relleno */
+  cursor: pointer;
+  /* Cambiar el cursor al pasar sobre el botón */
+  border-radius: 5px;
+  /* Borde redondeado */
+  margin: 5px;
+  /* Margen */
+}
+
+.cart-quantity {
+  /* Estilos para la cantidad en el carrito */
+}
+
+/* Otros estilos según sea necesario */

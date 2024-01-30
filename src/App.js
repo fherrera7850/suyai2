@@ -9,12 +9,11 @@ import { Contact } from "./pages/contact";
 import { Cart } from "./pages/cart/cart";
 import { Registro } from "./pages/registroUsuario";
 import { Login } from "./pages/user/login";
-import { ShopContextProvider } from "./context/shop-context";
+import { Checkout } from "./pages/shop/checkout";
 
 function App() {
   return (
     <div className="App">
-      <ShopContextProvider>
         <Router>
           <Navbar />
           <Routes>
@@ -26,9 +25,9 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/registroUsuario" element={<Registro />} />
             <Route path="/user/login" element={<Login />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </Router>
-      </ShopContextProvider>
     </div>
   );
 }

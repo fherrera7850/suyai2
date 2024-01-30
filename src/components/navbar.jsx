@@ -6,7 +6,7 @@ import { MdAccountCircle } from "react-icons/md";
 
 export const Navbar = () => {
   return (
-    <div className="navbar">
+    <div className="navbarSite">
       <div>
         <Link to="/home" className="inicio"> Inicio </Link>
         <Link to="/" className="catalogo"> Catálogo de productos </Link>
