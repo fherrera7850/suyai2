@@ -28,7 +28,7 @@ async function registrarUsuario() {
     JSON.stringify(objUsuario)
   );
 
-  await fetch("http://192.168.100.51:4000/api/registro/registrarUsuario", {
+  await fetch("http://192.168.100.22:4000/api/registro/registrarUsuario", {
     method: "POST",
     body: JSON.stringify(objUsuario),
     headers: { "Content-type": "application/json; charset=UTF-8" },

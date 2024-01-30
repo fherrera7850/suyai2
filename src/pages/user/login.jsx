@@ -14,7 +14,7 @@ export const Login = () => {
   
     try {
       const response = await fetch(
-        "http://192.168.100.51:4000/api/login/loginUsuario",
+        "http://192.168.100.22:4000/api/login/loginUsuario",
         {
           method: "POST",
           body: JSON.stringify(objUsuario),
@@ -27,8 +27,8 @@ export const Login = () => {
       if (response.status === 200) {
         const data = await response.json();
         // Ahora, data es el resultado del parsing del JSON
-        const abreviacionRol = data[0].abreviacionRol;
-        console.log("🚀 ~ abreviacionRol:", abreviacionRol);
+        //const abreviacionRol = data[0].abreviacionRol;
+        //console.log("🚀 ~ abreviacionRol:", abreviacionRol);
   
         switch (response.status) {
           case 200:
