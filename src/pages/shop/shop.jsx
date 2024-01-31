@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./shop.css";
 import "./styles/Product.css";
+import { formatSubtotal } from "../../utils/Numbers";
 
 export const Shop = () => {
 
@@ -11,7 +12,7 @@ export const Shop = () => {
     const fetchProducts = async (userId) => {
       try {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
-       
+
         setArrProducts(response.data);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
@@ -27,28 +28,27 @@ export const Shop = () => {
 
     const idUsuario = 1; //simula sesion
 
-    await axios.post(process.env.REACT_APP_API_URL + '/carrito/actualizaCarrito', {
-      idUsuario: idUsuario,
-      idProducto: idProducto,
-      action: action
-    })
-      .then(response => {
-        console.log('Respuesta del servidor:', response.data);
-        setArrProducts(response.data);
+    if (idUsuario > 0) {
+      await axios.post(process.env.REACT_APP_API_URL + '/carrito/actualizaCarrito', {
+        idUsuario: idUsuario,
+        idProducto: idProducto,
+        action: action
       })
-      .catch(error => {
-        console.error('Error al realizar la petición:', error);
-      });
+        .then(response => {
+          console.log('Respuesta del servidor:', response.data);
+          setArrProducts(response.data);
+        })
+        .catch(error => {
+          console.error('Error al realizar la petición:', error);
+        });
+    } else {
+      alert("Debe iniciar sesión");
+    }
+
 
   };
 
-  const formatSubtotal = (amount) => {
-    return amount.toLocaleString("es-ES", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-      useGrouping: true
-    });
-  };
+ 
 
   return (
     <div className="shop">

@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles/Checkout.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Checkout = () => {
+
+  const [deliveryOption, setDeliveryOption] = useState('');
+  const [showAddress, setShowAddress] = useState(false);
+
+  const handleDeliveryOptionChange = (event) => {
+    setDeliveryOption(event.target.value);
+    setShowAddress(true); // Mostrar el input de dirección cuando se elige una opción de entrega
+  };
 
   return (
     <div className="maincontainer">
@@ -70,84 +78,66 @@ export const Checkout = () => {
           </div>
           {/* Datos Checkout */}
           <div class="col-md-8 order-md-1">
-            <h4 class="mb-3">Datos para despacho</h4>
+            <h4 class="mb-3">Datos Compra</h4>
             <form class="needs-validation" novalidate>
               <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="firstName">First name</label>
+                <div class="mb-3">
+                  <label for="firstName">Nombre</label>
                   <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
                   <div class="invalid-feedback">
                     Valid first name is required.
                   </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="lastName">Last name</label>
-                  <input type="text" class="form-control" id="lastName" placeholder="" value="" required />
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
-                </div>
               </div>
+
               <div class="mb-3">
-                <label for="username">Username</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">@</span>
-                  </div>
-                  <input type="text" class="form-control" id="username" placeholder="Username" required />
-                  <div class="invalid-feedback">
-                    Your username is required.
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="email">Email <span class="text-muted">(Optional)</span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com" />
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" />
                 <div class="invalid-feedback">
                   Please enter a valid email address for shipping updates.
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required />
-                <div class="invalid-feedback">
-                  Please enter your shipping address.
+
+
+              {/* Opciones de entrega */}
+              <div className="mb-3">
+                <label>¿Cómo desea recibir su pedido?</label>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="deliveryOption"
+                    value="domicilio"
+                    checked={deliveryOption === 'domicilio'}
+                    onChange={handleDeliveryOptionChange}
+                  />
+                  <label className="form-check-label">Entrega a domicilio</label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="deliveryOption"
+                    value="tienda"
+                    checked={deliveryOption === 'tienda'}
+                    onChange={handleDeliveryOptionChange}
+                  />
+                  <label className="form-check-label">Retiro en tienda</label>
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite" />
-              </div>
-              <div class="row">
-                <div class="col-md-5 mb-3">
-                  <label for="country">Country</label>
-                  <select class="custom-select d-block w-100" id="country" required>
-                    <option value="">Choose...</option>
-                    <option>United States</option>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please select a valid country.
+              
+              {/* Dirección de entrega */}
+              {showAddress && (
+                <div className="mb-3">
+                  <label htmlFor="address">Dirección de entrega</label>
+                  <input type="text" className="form-control" id="address" placeholder="1234 Main St" required />
+                  <div className="invalid-feedback">
+                    Por favor ingrese su dirección de entrega.
                   </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="state">State</label>
-                  <select class="custom-select d-block w-100" id="state" required>
-                    <option value="">Choose...</option>
-                    <option>California</option>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please provide a valid state.
-                  </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label for="zip">Zip</label>
-                  <input type="text" class="form-control" id="zip" placeholder="" required />
-                  <div class="invalid-feedback">
-                    Zip code required.
-                  </div>
-                </div>
-              </div>
-              <hr class="mb-4" />
+              )}
+              <hr className="mb-4" />
+
               <h4 class="mb-3">Payment</h4>
 
               <div class="row">
@@ -189,11 +179,11 @@ export const Checkout = () => {
           </div>
         </div>
         <footer class="my-5 pt-5 text-muted text-center text-small">
-          <p class="mb-1">&copy; 2020-2021 therichpost.com</p>
+          <p class="mb-1">&copy; <b>2024 AguaSuyai.cl</b></p>
           <ul class="list-inline">
-            <li class="list-inline-item"><a href="#">Privacy</a></li>
-            <li class="list-inline-item"><a href="#">Terms</a></li>
-            <li class="list-inline-item"><a href="#">Support</a></li>
+            <li class="list-inline-item"><a href="#">Privacidad</a></li>
+            <li class="list-inline-item"><a href="#">Términos</a></li>
+            <li class="list-inline-item"><a href="#">Soporte</a></li>
           </ul>
         </footer>
       </div>
