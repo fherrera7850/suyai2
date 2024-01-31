@@ -19,7 +19,7 @@ export const Cart = () => {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
         let monto = 0;
         response.data.forEach(element => {
-          monto += element.precio * element.cantidad;  
+          monto += element.precio * element.cantidad;
         });
         setTotalAmount(monto);
         setArrProducts(response.data);
@@ -41,7 +41,9 @@ export const Cart = () => {
       </div>
       <div className="cart">
         {arrProducts.map((product) => {
-          return <CartItem data={product} key={product.id} />;
+          if (product.cantidad > 0) {
+            return <CartItem data={product} key={product.id} />;
+          }
         })}
       </div>
 
