@@ -8,24 +8,38 @@ export const Shop = () => {
   const [arrProducts, setArrProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProducts = async (userId) => {
       try {
-        const response = await axios.get('http://192.168.100.4:4000/api/producto/getProductos');
-        response.data.forEach(element => {
-          element.cantidad = 0; // se inicializa la cantidad en 0
-        });
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
+       
         setArrProducts(response.data);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
       }
+
     };
 
-    fetchProducts(); // se debe llamar a la función desde adentro porque useeffect no es asincrono
+    const idUsuario = 1; //simula sesion
+    fetchProducts(idUsuario); // se debe llamar a la función desde adentro porque useeffect no es asincrono
   }, []);
 
-  const addToCart = async (idProducto, cantidad) => {
-    
-      //'http://192.168.100.4:4000/api/carrito/actualizaCarrito'
+  const actualizaCarro = async (idProducto, action) => {
+
+    const idUsuario = 1; //simula sesion
+
+    await axios.post(process.env.REACT_APP_API_URL + '/carrito/actualizaCarrito', {
+      idUsuario: idUsuario,
+      idProducto: idProducto,
+      action: action
+    })
+      .then(response => {
+        console.log('Respuesta del servidor:', response.data);
+        setArrProducts(response.data);
+      })
+      .catch(error => {
+        console.error('Error al realizar la petición:', error);
+      });
+
   };
 
   const formatSubtotal = (amount) => {
@@ -53,16 +67,16 @@ export const Shop = () => {
               <p>${formatSubtotal(product.precio)}</p>
             </div>
             {product.cantidad === 0 ? ( //se muestra el boton de añadir al carrito solo cuando la cant es 0
-              <button className="add-to-cart-btn" onClick={() => { addToCart(product.idProducto) }}>
+              <button className="add-to-cart-btn" onClick={() => { actualizaCarro(product.idProducto, "add") }}>
                 Añadir al carrito
               </button>
             ) : (
               <div className="cart-controls">
-                <button className="remove-from-cart-btn" onClick={() => { }}>
+                <button className="remove-from-cart-btn" onClick={() => { actualizaCarro(product.idProducto, "remove") }}>
                   -
                 </button>
                 <span className="cart-quantity">{product.cantidad}</span>
-                <button className="add-to-cart-btn" onClick={() => { }}>
+                <button className="add-to-cart-btn" onClick={() => { actualizaCarro(product.idProducto, "add") }}>
                   +
                 </button>
               </div>
