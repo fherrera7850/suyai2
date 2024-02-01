@@ -9,7 +9,8 @@ import { Contact } from "./pages/contact";
 import { Cart } from "./pages/cart/cart";
 import { Registro } from "./pages/registroUsuario";
 import { Login } from "./pages/user/login";
-import { Checkout } from "./pages/shop/checkout";
+import { Checkout } from "./pages/checkout/checkout";
+import { Success } from "./pages/checkout/Success";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/registroUsuario" element={<Registro />} />
             <Route path="/user/login" element={<Login />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/success" element={<Success />} />
           </Routes>
         </Router>
     </div>
