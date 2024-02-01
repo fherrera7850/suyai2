@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/home";
-import { PedidosC } from "./pages/cliente/pedidosCliente";
+import PedidosCliente from "./pages/cliente/pedidosCliente";
 import { CuentaC } from "./pages/cliente/cuentaCliente";
 import { Navbar } from "./components/navbar";
 import { Shop } from "./pages/shop/shop";
@@ -19,7 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Shop />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/cliente/pedidosCliente" element={<PedidosC />} />
+            <Route path="/cliente/pedidosCliente" element={<PedidosCliente />} />
             <Route path="/cliente/cuentaCliente" element={<CuentaC />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
