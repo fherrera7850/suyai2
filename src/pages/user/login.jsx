@@ -14,7 +14,7 @@ export const Login = () => {
   
     try {
       const response = await fetch(
-        "http://192.168.100.22:4000/api/login/loginUsuario",
+        process.env.PUBLIC_URL + "/login/loginUsuario",
         {
           method: "POST",
           body: JSON.stringify(objUsuario),
