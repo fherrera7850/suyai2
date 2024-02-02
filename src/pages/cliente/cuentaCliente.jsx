@@ -20,7 +20,7 @@ export const CuentaC = () => {
 
       await axios.get(process.env.REACT_APP_API_URL + `/cliente/getCliente/${getCookie('userId')}`)
         .then((response) => {
-          console.log("🚀 ~ .then ~ response:", response.data)
+          console.log("🚀 ~ .then ~ response:", response)
           setNombreCompleto(response.data[0].nombreCompleto);
           setNombreUsuario(response.data[0].nombreUsuario);
           setPassword('******');

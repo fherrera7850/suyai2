@@ -54,12 +54,21 @@ export const Navbar = () => {
     }
   }
 
+  const AdminProductos = () => {
+    if (getCookie("rol") === 'a') {
+      return (<Link to="/admin/maestroProductos" className="catalogo">Administrar Productos</Link>)
+    } else {
+      return (<></>)
+      
+    }
+  }
+
   return (
     <div className="navbarSite">
       <div className="linksContainer">
         <Link to="/home" className="inicio">Inicio</Link>
         <Link to="/" className="catalogo">Catálogo de productos</Link>
-
+        <AdminProductos />
         {/* <Link to="/cliente/pedidosCliente" className="pedidos">Historial de pedidos</Link>
         <Link to="/cliente/cuentaCliente" className="cuenta">Cuenta</Link> */}
         <PedidosCuenta />
