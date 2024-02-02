@@ -1,55 +1,58 @@
 import React, { useState } from "react";
 import loginImage from "./../../assets/logo_suyai.JPG";
 import "../index.css";
+import { useNavigate } from "react-router";
+import axios from "axios";
+import { setCookie } from "../../utils/Cookie";
+import { useAuth } from './../../context/AuthContext';
 
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setIsLoggedIn, setUserId } = useAuth();
+  const navigate = useNavigate();
 
   const loginUsuario = async () => {
     const objUsuario = {
       nombreUsuario: username,
       passwordUsuario: password,
     };
-  
+    console.log("🚀 ~ loginUsuario ~ objUsuario:", objUsuario)
+
     try {
-      const response = await fetch(
-        process.env.PUBLIC_URL + "/login/loginUsuario",
-        {
-          method: "POST",
-          body: JSON.stringify(objUsuario),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        }
-      );
-  
-      console.log("🚀 ~ response:", response);
-  
-      if (response.status === 200) {
-        const data = await response.json();
-        // Ahora, data es el resultado del parsing del JSON
-        //const abreviacionRol = data[0].abreviacionRol;
-        //console.log("🚀 ~ abreviacionRol:", abreviacionRol);
-  
-        switch (response.status) {
-          case 200:
-            alert("login exitoso");
-            break;
-          case 204:
-            alert("contraseña incorrecta");
-            break;
-          default:
-            alert("error");
-            break;
-        }
-      } else {
-        alert("error en la solicitud");
-      }
+      // Ahora, data es el resultado del parsing del JSON
+      //const abreviacionRol = data[0].abreviacionRol;
+      //console.log("🚀 ~ abreviacionRol:", abreviacionRol);
+      await axios.post(process.env.REACT_APP_API_URL + '/login/loginUsuario', objUsuario)
+        .then(response => {
+          console.log("🚀 ~ loginUsuario ~ response:", response)
+          if (response.status === 200) {
+            setCookie('userId', response.data, 7);
+            setUserId(response.data);
+            setIsLoggedIn(true);
+            navigate('/')
+          }
+          else if (response.status === 204) {
+            alert("Usuario/Contraseña incorrectos.");
+          }
+          else {
+            alert("Error: " + response.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error al realizar la petición:', error);
+        });
+
+
+
+
+
     } catch (error) {
       console.log("🚀 catch error:", error);
       alert("error en la solicitud");
     }
   };
-  
+
 
   return (
     <>

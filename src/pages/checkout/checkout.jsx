@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import './styles/Checkout.css';
+import './Checkout.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { formatSubtotal } from '../../utils/Numbers';
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
+import { Navigate, useNavigate } from 'react-router';
+import { useAuth } from './../../context/AuthContext';
+import { getCookie } from '../../utils/Cookie';
 
 export const Checkout = () => {
+
+  const navigate = useNavigate();
+  const { setUserId,userId } = useAuth();
 
   const [deliveryOption, setDeliveryOption] = useState('tienda');
   const [showAddress, setShowAddress] = useState(false);
@@ -19,7 +25,7 @@ export const Checkout = () => {
   const [shopAddress, setShopAddress] = useState('Las Araucarias 165, El Bosque, Chile');
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
-  const latDefault = -33.557169;
+  const latDefault = -33.557169; //direccion las araucarias
   const lngDefault = -70.675131;
   const [titularTarjeta, setTitularTarjeta] = useState('');
   const [tarjetaCredito, setTarjetaCredito] = useState('');
@@ -27,6 +33,11 @@ export const Checkout = () => {
   const [cvv, setCvv] = useState('');
 
   useEffect(() => {
+    if (getCookie("userId")) {
+      console.log("🚀 ~ App ~ getCookie(userId):", getCookie("userId"))
+      setUserId(getCookie("userId"));
+    }
+
     const fetchProducts = async (userId) => {
       try {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
@@ -59,15 +70,74 @@ export const Checkout = () => {
       }
     };
 
-    const idUsuario = 1; //simula sesion
-    fetchProducts(idUsuario); // se debe llamar a la función desde adentro porque useeffect no es asincrono
-    fetchCustomer(idUsuario);
+    fetchProducts(getCookie("userId")); // se debe llamar a la función desde adentro porque useeffect no es asincrono
+    fetchCustomer(getCookie("userId"));
   }, []);
 
   const handleDeliveryOptionChange = (event) => {
     setDeliveryOption(event.target.value);
     setShowAddress(true); // Mostrar el input de dirección cuando se elige una opción de entrega
   };
+
+  const handleTarjetaCreditoChange = (e) => {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/\D/g, ''); // Filtrar solo números
+    const formattedValue = numericValue
+      .replace(/\s/g, '') // Eliminar espacios en blanco existentes
+      .replace(/(.{4})/g, '$1 '); // Insertar un espacio cada 4 dígitos
+    setTarjetaCredito(formattedValue);
+  };
+
+  const handleFechaVencimientoChange = (e) => {
+    let inputValue = e.target.value;
+
+    // Eliminar cualquier carácter que no sea un dígito
+    inputValue = inputValue.replace(/\D/g, '');
+
+    // Insertar "/" después de los primeros 2 dígitos
+    if (inputValue.length > 2) {
+      inputValue = inputValue.replace(/(\d{2})(\d{2})/, '$1/$2');
+    }
+
+    setFechaVencimiento(inputValue);
+  };
+
+  const handleCvvChange = (e) => {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/\D/g, ''); // Filtrar solo números
+    setCvv(numericValue);
+  };
+
+  const finalizaCompra = async () => {
+
+    if (userId > 0) {
+      await axios.post(process.env.REACT_APP_API_URL + '/pedido/completaPedido', {
+        idUsuario: userId,
+        formaEntrega: deliveryOption === 'tienda' ? 'T' : 'D', //tienda(T) o domicilio(D)
+        monto: totalAmount
+      })
+        .then(response => {
+          console.log("🚀 ~ finalizaCompra ~ response:", response)
+          if (response.status === 200) {
+            const idPedido = response.data;
+            navigate("/success/" + idPedido);
+          }
+          else {
+            alert("Se produjo un error al finalizar la compra. Error: " + response.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error al realizar la petición:', error);
+        });
+    } else {
+      alert("Debe iniciar sesión");
+    }
+
+  }
+
+  if (!getCookie("userId")) { // si no hay usuario logueado redirigir a la página de inicio
+    return <Navigate to="/home" />
+  }
 
   return (
     <APIProvider apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
@@ -176,9 +246,10 @@ export const Checkout = () => {
                   </div>
                 </div>
                 <div style={{ height: 400, width: '100%' }}>
-
-                  <Map center={{lat: deliveryOption === 'domicilio' ? lat : latDefault, lng: deliveryOption === 'domicilio' ? lng : lngDefault}} zoom={17}>
-                    <Marker position={{lat: deliveryOption === 'domicilio' ? lat : latDefault, lng: deliveryOption === 'domicilio' ? lng : lngDefault}} />
+                  {/* Pregunta si esta seleccionada la opcion "Despacho a domicilio" 
+                  y dependiendo de eso usa las coordenadas de la direccion del usuario o las definidas por defecto */}
+                  <Map center={{ lat: deliveryOption === 'domicilio' ? lat : latDefault, lng: deliveryOption === 'domicilio' ? lng : lngDefault }} zoom={17}>
+                    <Marker position={{ lat: deliveryOption === 'domicilio' ? lat : latDefault, lng: deliveryOption === 'domicilio' ? lng : lngDefault }} />
                   </Map>
 
                 </div>
@@ -189,7 +260,7 @@ export const Checkout = () => {
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="cc-name">Titular Tarjeta</label>
-                    <input type="text" class="form-control" id="cc-name" placeholder="" required value={titularTarjeta} onChange={(e) => setTitularTarjeta(e.target.value)} />
+                    <input type="text" class="form-control" id="cc-name" placeholder="JUAN PEREZ Z." required value={titularTarjeta} onChange={(e) => setTitularTarjeta(e.target.value.toUpperCase())} />
                     <small class="text-muted">Nombre completo escrito en la tarjeta</small>
                     <div class="invalid-feedback">
                       Name on card is required
@@ -197,7 +268,15 @@ export const Checkout = () => {
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="cc-number">Tarjeta de Crédito</label>
-                    <input type="text" class="form-control" id="cc-number" placeholder="" required value={tarjetaCredito} onChange={(e) => setTarjetaCredito(e.target.value)} />
+                    <input type="text"
+                      class="form-control"
+                      id="cc-number"
+                      placeholder="1234 5678 9012 3456"
+                      required
+                      value={tarjetaCredito}
+                      onChange={handleTarjetaCreditoChange}
+                      pattern="[0-9]*"
+                      maxLength="19" />
                     <div class="invalid-feedback">
                       Credit card number is required
                     </div>
@@ -206,14 +285,34 @@ export const Checkout = () => {
                 <div class="row">
                   <div class="col-md-3 mb-3">
                     <label for="cc-expiration">Expira</label>
-                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required value={fechaVencimiento} onChange={(e) => setFechaVencimiento(e.target.value)} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="cc-expiration"
+                      placeholder="MM/YY"
+                      pattern="\d{2}/\d{2}" // Patrón de entrada
+                      maxLength="5" // Máximo 5 caracteres (incluyendo "/")
+                      required
+                      value={fechaVencimiento}
+                      onChange={handleFechaVencimientoChange} // Usar el manejador personalizado
+                    />
                     <div class="invalid-feedback">
                       Expiration date required
                     </div>
                   </div>
                   <div class="col-md-3 mb-3">
                     <label for="cc-expiration">CVV</label>
-                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required value={cvv} onChange={(e) => setCvv(e.target.value)} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="cc-cvv"
+                      placeholder="123"
+                      pattern="[0-9]*" // Solo números
+                      maxLength="3" // Máximo 3 caracteres
+                      required
+                      value={cvv}
+                      onChange={handleCvvChange} // Usar el manejador personalizado
+                    />
                     <div class="invalid-feedback">
                       Security code required
                     </div>
@@ -222,7 +321,8 @@ export const Checkout = () => {
                 <hr class="mb-4" />
                 <div class="col-md-12 mb-3">
                   <div class="d-flex justify-content-end">
-                    <button className="btn btn-primary btn-lg" type="button">Finalizar Compra</button>
+                    <button className="btn btn-primary btn-lg" type="button" onClick={finalizaCompra}>Finalizar Compra</button>
+
                   </div>
                 </div>
               </form>

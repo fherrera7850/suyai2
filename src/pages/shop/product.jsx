@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import "./styles/Product.css"; // Importamos un archivo CSS para los estilos
 
 export const Product = (props) => {
