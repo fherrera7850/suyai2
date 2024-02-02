@@ -37,9 +37,21 @@ export const Navbar = () => {
 
   const Logout = () => {
     deleteCookie("userId");
+    deleteCookie("rol");
     setIsLoggedIn(false);
     window.alert('Sesión cerrada exitosamente');
     window.location.href = '/home';
+  }
+
+  const PedidosCuenta = () => { //Muestra el menu cuenta e historial de pedidos solo cuenta hay sesion iniciada
+    if (isLoggedIn) {
+      return (<>
+        <Link to="/cliente/pedidosCliente" className="pedidos">Historial de pedidos</Link>
+        <Link to="/cliente/cuentaCliente" className="cuenta">Cuenta</Link>
+      </>)
+    } else {
+      return (<></>) //se ocultan
+    }
   }
 
   return (
@@ -47,9 +59,12 @@ export const Navbar = () => {
       <div className="linksContainer">
         <Link to="/home" className="inicio">Inicio</Link>
         <Link to="/" className="catalogo">Catálogo de productos</Link>
-        <Link to="/cliente/pedidosCliente" className="pedidos">Historial de pedidos</Link>
-        <Link to="/cliente/cuentaCliente" className="cuenta">Cuenta</Link>
-        <Link to="/contact" className="ayuda">Ayuda</Link>
+
+        {/* <Link to="/cliente/pedidosCliente" className="pedidos">Historial de pedidos</Link>
+        <Link to="/cliente/cuentaCliente" className="cuenta">Cuenta</Link> */}
+        <PedidosCuenta />
+
+        {/* <Link to="/contact" className="ayuda">Ayuda</Link> */}
       </div>
       <div className="rightLinksContainer">
         <Link to="/cart" className="carrito"><IoCartOutline size={30} /></Link>

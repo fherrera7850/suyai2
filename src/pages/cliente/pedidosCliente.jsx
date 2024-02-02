@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getCookie } from '../../utils/Cookie';
+import { formatSubtotal } from "../../utils/Numbers";
 
 const PedidosCliente = () => {
   const [pedidos, setPedidos] = useState([]);
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [detallePedido, setDetallePedido] = useState(null);
+  const styles = { //estilo para tabla de pedidos
+    table: {
+      borderCollapse: 'collapse',
+      width: '100%',
+    },
+    th: {
+      backgroundColor: '#f2f2f2',
+      borderBottom: '1px solid #ddd',
+      padding: '8px',
+      textAlign: 'left',
+    },
+    td: {
+      borderBottom: '1px solid #ddd',
+      padding: '8px',
+      textAlign: 'left',
+    },
+  };
 
   useEffect(() => {
-    const idUsuario = 29; // Simula sesión
+    const idUsuario = getCookie('userId');
     fetchPedidos(idUsuario);
   }, []);
 
@@ -20,7 +39,8 @@ const PedidosCliente = () => {
 
   const fetchPedidos = async (idUsuario) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/pedido/getPedidos/${idUsuario}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/pedido/getOrdersByUser/${idUsuario}`);
+      console.log("🚀 ~ fetchPedidos ~ response.data:", response.data)
       setPedidos(response.data);
     } catch (error) {
       console.error('Error al obtener los pedidos:', error);
@@ -30,6 +50,7 @@ const PedidosCliente = () => {
   const fetchDetallePedido = async (idPedido) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/pedido/getDetallePedido/${idPedido}`);
+      console.log("🚀 ~ fetchDetallePedido ~ response.data:", response.data)
       setDetallePedido(response.data);
     } catch (error) {
       console.error('Error al obtener los detalles del pedido:', error);
@@ -39,7 +60,7 @@ const PedidosCliente = () => {
   const handlePedidoChange = async (idPedido) => {
     setSelectedPedido(idPedido);
   };
-  
+
   const handleMostrarPedido = async () => {
     if (selectedPedido) {
       //Es una función que realiza una solicitud para obtener los detalles del pedido asociado al selectedPedido (pedido seleccionado).
@@ -47,56 +68,73 @@ const PedidosCliente = () => {
     }
   };
 
-  return (
-    <div>
-      <h1>Pedidos del Cliente</h1>
-      <div>
-        <label htmlFor="pedidos">Selecciona un pedido:</label>
-        <select id="pedidos" onChange={(e) => handlePedidoChange(e.target.value)}>
-          <option value="" disabled selected>
-            Selecciona un pedido
-          </option>
-          {pedidos.map((pedido) => (
-            <option key={pedido.idPedido} value={pedido.idPedido}>
-              Pedido #{pedido.idPedido} - {pedido.fecha}
-            </option>
-          ))}
-        </select>
-        <button onClick={() => handleMostrarPedido()}>
-                  Mostrar pedido
-                </button>
-      </div>
-
-      {selectedPedido && (
+  if (getCookie('userId') > 0) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1>Pedidos del Cliente</h1>
         <div>
-          <h2>Detalle del Pedido #{selectedPedido}</h2>
-          {detallePedido ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>ID Producto</th>
-                  <th>ID Pedido</th>
-                  <th>Cantidad</th>
-                </tr>
-              </thead>
-              <tbody>
-                {detallePedido.map((detalle) => (
-                  <tr key={detalle.idCarrito}>
-                    <td>{detalle.idProducto}</td>
-                    <td>{detalle.idPedido}</td>
-                    <td>{detalle.cantidad}</td>
-                  </tr>
-                  
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p> Cargando detalles del pedido...</p>
-          )}
+          <label style={{fontSize: 25 }} htmlFor="pedidos">Selecciona un pedido: </label>
+          <select id="pedidos" onChange={(e) => handlePedidoChange(e.target.value)} style={{ marginLeft: 10, fontSize: 25 }}>
+            <option value="" disabled selected>
+              Selecciona un pedido
+            </option>
+            {pedidos.map((pedido) => (
+              <option key={pedido.idPedido} value={pedido.idPedido}>
+                Pedido #{pedido.idPedido} - {pedido.fecha}
+              </option>
+            ))}
+          </select>
         </div>
-      )}
-    </div>
-  );
+        <br /><br />
+        {selectedPedido && detallePedido && (
+          <div>
+            <h2>Detalle del Pedido #{selectedPedido}</h2>
+            <p><b>Usuario:</b> {detallePedido[0]?.nombreUsuario}</p>
+            <p><b>Fecha:</b> {detallePedido[0]?.fecha}</p>
+            <p><b>Estado:</b> {detallePedido[0]?.estado === 'C' ? 'Completado' : 'Rechazado'}</p>
+            <p><b>Total:</b> {'$' + formatSubtotal(detallePedido[0]?.monto)}</p>
+            <p><b>Forma Entrega:</b> {detallePedido[0]?.formaEntrega === 'T' ? 'Retiro en Tienda' : 'Despacho'}</p>
+            <p><b>Direccion:</b> {detallePedido[0]?.formaEntrega === 'T' ? 'Las Araucarias 169, El Bosque, RM, Chile' : detallePedido[0]?.direccion}</p>
+            <br /><br />
+            {detallePedido ? (
+              <>
+                <h2>Productos</h2>
+                <table style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.th}>Nombre Producto</th>
+                      <th style={styles.th}>Cantidad</th>
+                      <th style={styles.th}>Precio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {detallePedido?.map((producto, index) => (
+                      <tr key={index}>
+                        <td style={styles.td}>{producto.nombreProducto}</td>
+                        <td style={styles.td}>{producto.cantidad}</td>
+                        <td style={styles.td}>{'$' + formatSubtotal(producto.precio)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <p> Cargando detalles del pedido...</p>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1>NO AUTORIZADO</h1>
+      </div>
+    )
+
+  }
+
+
 };
 
 export default PedidosCliente;

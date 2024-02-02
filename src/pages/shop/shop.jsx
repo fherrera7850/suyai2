@@ -32,8 +32,9 @@ export const Shop = () => {
   }, []);
 
   const actualizaCarro = async (idProducto, action) => {
-
-    if (getCookie("userId") > 0) {
+    
+    console.log("🚀 ~ actualizaCarro ~ getCookie(rol):", getCookie("rol"))
+    if (getCookie("userId") > 0 && getCookie("rol") === 'c') {
       await axios.post(process.env.REACT_APP_API_URL + '/carrito/actualizaCarrito', {
         idUsuario: userId,
         idProducto: idProducto,
@@ -47,7 +48,7 @@ export const Shop = () => {
           console.error('Error al realizar la petición:', error);
         });
     } else {
-      alert("Debe iniciar sesión");
+      alert("Cuenta no autorizada. Inicie sesión o regístrese como cliente.");
     }
 
 

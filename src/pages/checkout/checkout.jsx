@@ -11,12 +11,13 @@ import { getCookie } from '../../utils/Cookie';
 export const Checkout = () => {
 
   const navigate = useNavigate();
-  const { setUserId,userId } = useAuth();
+  const { setUserId, userId } = useAuth();
 
   const [deliveryOption, setDeliveryOption] = useState('tienda');
   const [showAddress, setShowAddress] = useState(false);
   const [arrProducts, setArrProducts] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [puntosSuyai, setPuntosSuyai] = useState(0);
   const [cantProductos, setCantProductos] = useState(0);
 
   const [nombreCompleto, setNombreCompleto] = useState('');
@@ -47,6 +48,7 @@ export const Checkout = () => {
             monto += element.precio * element.cantidad;
         });
         setTotalAmount(monto);
+        setPuntosSuyai(monto * 0.01); //Acumula en puntos el equivalente a 1% del monto de la compra
         const productosConCantidad = response.data.filter(function (producto) {
           return producto.cantidad > 0;
         });
@@ -114,7 +116,8 @@ export const Checkout = () => {
       await axios.post(process.env.REACT_APP_API_URL + '/pedido/completaPedido', {
         idUsuario: userId,
         formaEntrega: deliveryOption === 'tienda' ? 'T' : 'D', //tienda(T) o domicilio(D)
-        monto: totalAmount
+        monto: totalAmount,
+        puntosCliente: puntosSuyai
       })
         .then(response => {
           console.log("🚀 ~ finalizaCompra ~ response:", response)
@@ -320,9 +323,11 @@ export const Checkout = () => {
                 </div>
                 <hr class="mb-4" />
                 <div class="col-md-12 mb-3">
+
+                  <h5 class="mb-3">Con esta compra acumularás {formatSubtotal(puntosSuyai)} Puntos Suyai!</h5>
+
                   <div class="d-flex justify-content-end">
                     <button className="btn btn-primary btn-lg" type="button" onClick={finalizaCompra}>Finalizar Compra</button>
-
                   </div>
                 </div>
               </form>

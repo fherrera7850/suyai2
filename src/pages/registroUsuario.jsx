@@ -33,18 +33,36 @@ export const Registro = () => {
       JSON.stringify(objUsuario)
     );
 
-    const response = await axios.post(process.env.REACT_APP_API_URL + '/registro/registrarUsuario', objUsuario);
-    console.log("🚀 ~ registrarUsuario ~ response:", response)
-    if (response.status === 200) {
-      setIsLoggedIn(true);
-      setUserId(response.data); // falta responder con el id del usuario
-      setCookie('userId', response.data, 7);
-      window.alert('Usuario registrado exitosamente');
-      window.location.href = '/';
+    if (!username || !password || !fullName || !email || !address || !cellphone) {
+      alert("Todos los campos son obligatorios");
+      return;
     }
-    else {
-      alert("Error al registrar usuario");
-    }
+
+    await axios.post(process.env.REACT_APP_API_URL + '/registro/registrarUsuario', objUsuario)
+      .then(response => {
+        console.log("🚀 ~ registrarUsuario ~ response:", response)
+        if (response.status === 200) {
+          setIsLoggedIn(true);
+          setUserId(response.data); 
+          setCookie('userId', response.data, 7);
+          setCookie('rol', 'c', 7);
+          window.alert('Usuario registrado exitosamente');
+          window.location.href = '/';
+        }
+      })
+      .catch(error => {
+        console.error("🚀 ~ registrarUsuario ~ error:", error.response.status)
+        if (error.response.status === 403) {
+          alert("El usuario ya existe");
+        }
+        else if (error.response.status === 400) {
+          alert("Solicitud incompleta.");
+        }
+        else {
+          alert("Error desconocido al registrar usuario");
+        }
+      })
+
   };
 
 
