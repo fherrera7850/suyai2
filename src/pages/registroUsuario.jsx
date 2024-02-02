@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import registroImage from "../assets/logo_suyai.JPG";
 import "./index.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "./../context/AuthContext";
+import { setCookie } from "../utils/Cookie";
 
 export const Registro = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +14,7 @@ export const Registro = () => {
   const [address, setAddress] = useState("");
   const [cellphone, setCellphone] = useState("");
 
+  const { setUserId, userId, setIsLoggedIn, isLoggedIn } = useAuth();
 
   async function registrarUsuario() {
 
@@ -29,16 +33,18 @@ export const Registro = () => {
       JSON.stringify(objUsuario)
     );
 
-    await fetch("http://192.168.100.22:4000/api/registro/registrarUsuario", {
-      method: "POST",
-      body: JSON.stringify(objUsuario),
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    })
-      .then((response) => {
-        console.log("🚀 ~ .then ~ response:", response)
-
-      })
-      .catch((err) => console.log(err));
+    const response = await axios.post(process.env.REACT_APP_API_URL + '/registro/registrarUsuario', objUsuario);
+    console.log("🚀 ~ registrarUsuario ~ response:", response)
+    if (response.status === 200) {
+      setIsLoggedIn(true);
+      setUserId(response.data); // falta responder con el id del usuario
+      setCookie('userId', response.data, 7);
+      window.alert('Usuario registrado exitosamente');
+      window.location.href = '/';
+    }
+    else {
+      alert("Error al registrar usuario");
+    }
   };
 
 
