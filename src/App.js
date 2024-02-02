@@ -11,6 +11,7 @@ import { Registro } from "./pages/registroUsuario";
 import { Login } from "./pages/user/login";
 import { Checkout } from "./pages/checkout/checkout";
 import { Success } from "./pages/checkout/Success";
+import {MaestroProductos} from "./pages/admin/maestroProductos";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/user/login" element={<Login />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/success/:id" element={<Success />} />
+            <Route path="/admin/maestroProductos" element={<MaestroProductos />} />
           </Routes>
         </Router>
     </div>
