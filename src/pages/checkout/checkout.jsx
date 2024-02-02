@@ -4,11 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { formatSubtotal } from '../../utils/Numbers';
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
+import { useAuth } from './../../context/AuthContext';
+import { getCookie } from '../../utils/Cookie';
 
 export const Checkout = () => {
 
   const navigate = useNavigate();
+  const { setUserId,userId } = useAuth();
 
   const [deliveryOption, setDeliveryOption] = useState('tienda');
   const [showAddress, setShowAddress] = useState(false);
@@ -30,6 +33,11 @@ export const Checkout = () => {
   const [cvv, setCvv] = useState('');
 
   useEffect(() => {
+    if (getCookie("userId")) {
+      console.log("🚀 ~ App ~ getCookie(userId):", getCookie("userId"))
+      setUserId(getCookie("userId"));
+    }
+
     const fetchProducts = async (userId) => {
       try {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
@@ -62,9 +70,8 @@ export const Checkout = () => {
       }
     };
 
-    const idUsuario = 27; //simula sesion
-    fetchProducts(idUsuario); // se debe llamar a la función desde adentro porque useeffect no es asincrono
-    fetchCustomer(idUsuario);
+    fetchProducts(getCookie("userId")); // se debe llamar a la función desde adentro porque useeffect no es asincrono
+    fetchCustomer(getCookie("userId"));
   }, []);
 
   const handleDeliveryOptionChange = (event) => {
@@ -101,8 +108,35 @@ export const Checkout = () => {
     setCvv(numericValue);
   };
 
-  const finalizaCompra = () => {
-    navigate("/success")
+  const finalizaCompra = async () => {
+
+    if (userId > 0) {
+      await axios.post(process.env.REACT_APP_API_URL + '/pedido/completaPedido', {
+        idUsuario: userId,
+        formaEntrega: deliveryOption === 'tienda' ? 'T' : 'D', //tienda(T) o domicilio(D)
+        monto: totalAmount
+      })
+        .then(response => {
+          console.log("🚀 ~ finalizaCompra ~ response:", response)
+          if (response.status === 200) {
+            const idPedido = response.data;
+            navigate("/success/" + idPedido);
+          }
+          else {
+            alert("Se produjo un error al finalizar la compra. Error: " + response.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error al realizar la petición:', error);
+        });
+    } else {
+      alert("Debe iniciar sesión");
+    }
+
+  }
+
+  if (!getCookie("userId")) { // si no hay usuario logueado redirigir a la página de inicio
+    return <Navigate to="/home" />
   }
 
   return (
@@ -287,8 +321,8 @@ export const Checkout = () => {
                 <hr class="mb-4" />
                 <div class="col-md-12 mb-3">
                   <div class="d-flex justify-content-end">
-                     <button className="btn btn-primary btn-lg" type="button" onClick={finalizaCompra}>Finalizar Compra</button> 
-                    
+                    <button className="btn btn-primary btn-lg" type="button" onClick={finalizaCompra}>Finalizar Compra</button>
+
                   </div>
                 </div>
               </form>

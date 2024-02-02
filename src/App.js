@@ -27,7 +27,7 @@ function App() {
             <Route path="/registroUsuario" element={<Registro />} />
             <Route path="/user/login" element={<Login />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/success" element={<Success />} />
+            <Route path="/success/:id" element={<Success />} />
           </Routes>
         </Router>
     </div>

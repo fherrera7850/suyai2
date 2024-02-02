@@ -3,12 +3,20 @@ import axios from "axios";
 import "./shop.css";
 import "./styles/Product.css";
 import { formatSubtotal } from "../../utils/Numbers";
+import { useAuth } from './../../context/AuthContext';
+import { getCookie } from "../../utils/Cookie";
 
 export const Shop = () => {
 
   const [arrProducts, setArrProducts] = useState([]);
+  const { setUserId, userId } = useAuth();
 
   useEffect(() => {
+    if (getCookie("userId")) {
+      console.log("🚀 ~ App ~ getCookie(userId):", getCookie("userId"))
+      setUserId(getCookie("userId"));
+    }
+
     const fetchProducts = async (userId) => {
       try {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
@@ -20,17 +28,14 @@ export const Shop = () => {
 
     };
 
-    const idUsuario = 1; //simula sesion
-    fetchProducts(idUsuario); // se debe llamar a la función desde adentro porque useeffect no es asincrono
+    fetchProducts(getCookie("userId")); // se debe llamar a la función desde adentro porque useeffect no es asincrono
   }, []);
 
   const actualizaCarro = async (idProducto, action) => {
 
-    const idUsuario = 1; //simula sesion
-
-    if (idUsuario > 0) {
+    if (getCookie("userId") > 0) {
       await axios.post(process.env.REACT_APP_API_URL + '/carrito/actualizaCarrito', {
-        idUsuario: idUsuario,
+        idUsuario: userId,
         idProducto: idProducto,
         action: action
       })
@@ -48,7 +53,7 @@ export const Shop = () => {
 
   };
 
- 
+
 
   return (
     <div className="shop">

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { CartItem } from "./cart-item";
 import { useNavigate } from "react-router-dom";
 import { formatSubtotal } from "../../utils/Numbers";
+import { useAuth } from './../../context/AuthContext';
 
 import "./cart.css";
 import axios from "axios";
+import { getCookie } from "../../utils/Cookie";
 
 export const Cart = () => {
   //const totalAmount = getTotalCartAmount();
@@ -12,8 +14,14 @@ export const Cart = () => {
   const navigate = useNavigate();
   const [arrProducts, setArrProducts] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const { setUserId,userId } = useAuth();
 
   useEffect(() => {
+
+    if (getCookie("userId")) {
+      console.log("🚀 ~ App ~ getCookie(userId):", getCookie("userId"))
+      setUserId(getCookie("userId"));
+    }
     const fetchProducts = async (userId) => {
       try {
         const response = await axios.get(process.env.REACT_APP_API_URL + '/producto/getProductos/' + userId);
@@ -29,8 +37,7 @@ export const Cart = () => {
 
     };
 
-    const idUsuario = 1; //simula sesion
-    fetchProducts(idUsuario); // se debe llamar a la función desde adentro porque useeffect no es asincrono
+    fetchProducts(getCookie("userId")); // se debe llamar a la función desde adentro porque useeffect no es asincrono
   }, []);
 
 
@@ -57,7 +64,7 @@ export const Cart = () => {
             onClick={() => { navigate("/checkout"); }}
             style={{ fontSize: 15 }}
           >
-            Completar pedido
+            Ir al checkout
           </button>
         </div>
       ) : (
