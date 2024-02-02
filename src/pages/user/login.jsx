@@ -27,8 +27,11 @@ export const Login = () => {
         .then(response => {
           console.log("🚀 ~ loginUsuario ~ response:", response)
           if (response.status === 200) {
-            setCookie('userId', response.data, 7);
-            setUserId(response.data);
+            const result = response.data;
+            console.log("🚀 ~ loginUsuario ~ result:", result)
+            setCookie('rol', result.rol, 7);
+            setCookie('userId', result.idUsuario, 7);
+            setUserId(result.idUsuario);
             setIsLoggedIn(true);
             navigate('/')
           }
